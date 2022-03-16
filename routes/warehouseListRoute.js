@@ -5,4 +5,4 @@ const warehouseListController = require('../controllers/warehouseListController.
 router.get('/', warehouseListController.getAll);
 router.get('/:id', warehouseListController.getOne);
 
-module.export = router;
+module.exports = router;

@@ -5,4 +5,4 @@ const inventoryListController = require('../controllers/inventoryListController.
 router.get('/', inventoryListController.getAll);
 router.get('/:id', inventoryListController.getOne);
 
-module.export = router;
+module.exports = router;

@@ -1,4 +1,5 @@
 const filePath = './data/warehouses.json';
+const fs = require ('fs')
 
 function readWarehouses() {
     const warehouseFile = fs.readFileSync(filePath);
@@ -16,7 +17,7 @@ const getById = (id) => {
     id === warehouse.id);
 };
 
-module.export = 
+module.exports = 
 {
 getAll,
 getById

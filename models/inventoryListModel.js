@@ -1,4 +1,5 @@
 const filePath = './data/inventories.json';
+const fs = require ('fs')
 
 function readInventories() {
     const inventoryFile = fs.readFileSync(filePath);
@@ -16,7 +17,7 @@ const getById = (id) => {
     id === inventory.id);
 };
 
-module.export = 
+module.exports = 
 {
 getAll,
 getById
