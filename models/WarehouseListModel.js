@@ -10,4 +10,14 @@ const getAll = () => {
     return readWarehouses();
 };
 
-module.export = getAll;
+const getById = (id) => {
+    const warehouseData = readWarehouses();
+    return warehouseData.find((warehouse) => 
+    id === warehouse.id);
+};
+
+module.export = 
+{
+getAll,
+getById
+}
