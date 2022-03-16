@@ -20,4 +20,22 @@ const getAll = (req, res) => {
     res.json(strippedData);
 }
 
-module.exports = getAll;
+const getOne = (req, res) => {
+    const { id } = req.params;
+    const foundWarehouse = warehouseModel.getById(id);
+    const inventories = items.filter((item)=> item.warehouseID === req.params.itemid)
+
+    if(!foundWarehouse) {
+        return res.status(404).send('A warehouse does not exist with the id of' + id);
+    }
+
+    res.json(foundWarehouse);
+    res.json(foundWarehouse);
+    res.json(inventories);
+};
+
+module.exports = 
+{
+getAll,
+getOne
+};
