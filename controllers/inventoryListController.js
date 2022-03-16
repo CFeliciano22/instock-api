@@ -30,7 +30,6 @@ const getOne = (req, res) => {
     }
 
     res.json(foundWarehouse);
-    res.json(foundWarehouse);
     res.json(inventories);
 };
 
