@@ -4,6 +4,6 @@ const inventoryListController = require('../controllers/inventoryListController.
 
 router.get('/', inventoryListController.getAll);
 router.get('/:id', inventoryListController.getOne);
-router.get('/:id', inventoryListController.deleteOne);
+router.delete('/:id', inventoryListController.deleteOne);
 
 module.exports = router;
