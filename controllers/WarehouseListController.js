@@ -35,10 +35,14 @@ const getOne = (req, res) => {
 
 const deleteOne = (req, res) => {
   const warehouseData = warehouseListModel.getAll();
-  updatedWarehouseData = warehouseData.filter((warehouseLocation) => warehouseLocation.id !== req.params.id);
+  updatedWarehouseData = warehouseData.filter((warehouse) => warehouse.id !== req.params.id);
   warehouseListModel.writeWarehouses(updatedWarehouseData);
+  
+  const inventoryData = inventoryListModel.getAll();
+  updatedInventoryData = inventoryData.filter((inventoryList) => inventoryList.warehouseID !== req.params.id);
+  inventoryListModel.writeInventories(updatedInventoryData);
 
-  return res.status(200).send(`The warehouse with the id ${req.params.id} was deleted.`)
+  res.status(200).send(`The warehouse with the id ${req.params.id} was deleted.`)
 }
 
 module.exports = {
