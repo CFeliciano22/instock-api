@@ -34,7 +34,7 @@ const deleteOne = (req, res) => {
   updatedInventoryData = inventoryData.filter((inventoryItem) => inventoryItem.id !== req.params.id);
   inventoryListModel.writeInventories(updatedInventoryData);
 
-  return res.status(200).send(`The item with the id ${req.params.id} was deleted.`)
+  res.status(200).send(`The item with the id ${req.params.id} was deleted.`)
 }
 
 module.exports = {
