@@ -29,7 +29,15 @@ const getOne = (req, res) => {
   res.json(foundItem);
 };
 
+const deleteOne = (req, res) => {
+  const { id } = req.params;
+  const inventoryData = inventoryListModel.getAll();
+  updatedInventoryData = inventoryData.filter((inventoryItem) => inventoryItem.id !== req.params.id);
+  inventoryListModel.writeInventories(updatedInventoryData);
+}
+
 module.exports = {
   getAll,
   getOne,
+  deleteOne,
 };
