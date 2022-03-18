@@ -33,7 +33,16 @@ const getOne = (req, res) => {
   });
 };
 
+const deleteOne = (req, res) => {
+  const warehouseData = warehouseListModel.getAll();
+  updatedWarehouseData = warehouseData.filter((warehouseLocation) => warehouseLocation.id !== req.params.id);
+  warehouseListModel.writeWarehouses(updatedWarehouseData);
+
+  return res.status(200).send(`The warehouse with the id ${req.params.id} was deleted.`)
+}
+
 module.exports = {
   getAll,
   getOne,
+  deleteOne
 };
