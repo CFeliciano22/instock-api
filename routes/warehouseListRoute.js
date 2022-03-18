@@ -4,5 +4,6 @@ const warehouseListController = require('../controllers/warehouseListController.
 
 router.get('/', warehouseListController.getAll);
 router.get('/:id', warehouseListController.getOne);
+router.delete('/:id', warehouseListController.deleteOne);
 
 module.exports = router;
