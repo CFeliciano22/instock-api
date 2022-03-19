@@ -1,5 +1,6 @@
 const warehouseListModel = require("../models/warehouseListModel.js");
 const inventoryListModel = require("../models/inventoryListModel.js");
+const uuid = require("uuid");
 
 const getAll = (req, res) => {
   const warehouseData = warehouseListModel.getAll();
@@ -33,7 +34,39 @@ const getOne = (req, res) => {
   });
 };
 
+const editOne = (req, res) => {
+  const { id } = req.params;
+  const foundWarehouse = warehouseListModel.getById(id);
+  foundWarehouse = {
+    name: req.params.name,
+    address: req.params.address,
+    city: req.params.city,
+    country: req.params.category,
+    contact: req.params.contact.name,
+    phone: req.params.contact.phone,
+    email: req.params.contact.email,
+  };
+};
+
+const postOne = (req, res) => {
+  const newID = uuid;
+  const newWarehouse = {
+    id: newID,
+    name: req.params.name,
+    address: req.params.address,
+    city: req.params.city,
+    country: req.params.category,
+    contact: req.params.contact.name,
+    phone: req.params.contact.phone,
+    email: req.params.contact.email,
+  };
+
+  warehouseListModel.push(newWarehouse);
+};
+
 module.exports = {
   getAll,
   getOne,
+  editOne,
+  postOne,
 };

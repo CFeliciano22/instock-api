@@ -29,7 +29,20 @@ const getOne = (req, res) => {
   res.json(foundItem);
 };
 
+const editOne = (req, res) => {
+  const { id } = req.params;
+  const foundItem = inventoryListModel.getById(id);
+  foundItem = {
+    itemName: req.params.itemName,
+    description: req.params.description,
+    category: req.params.category,
+    status: req.params.status,
+    warehouseName: req.params.warehouseName,
+  };
+};
+
 module.exports = {
   getAll,
   getOne,
+  editOne,
 };
