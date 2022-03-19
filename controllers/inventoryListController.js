@@ -29,7 +29,16 @@ const getOne = (req, res) => {
   res.json(foundItem);
 };
 
+const deleteOne = (req, res) => {
+  const inventoryData = inventoryListModel.getAll();
+  updatedInventoryData = inventoryData.filter((inventoryItem) => inventoryItem.id !== req.params.id);
+  inventoryListModel.writeInventories(updatedInventoryData);
+
+  res.status(200).send(`The item with the id ${req.params.id} was deleted.`)
+}
+
 module.exports = {
   getAll,
   getOne,
+  deleteOne,
 };

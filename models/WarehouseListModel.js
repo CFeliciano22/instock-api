@@ -17,8 +17,13 @@ const getById = (id) => {
     id === warehouse.id);
 };
 
+function writeWarehouses(data) {
+    fs.writeFileSync(filePath, JSON.stringify(data));
+};
+
 module.exports = 
 {
 getAll,
-getById
+getById,
+writeWarehouses
 }
