@@ -38,11 +38,23 @@ const editOne = (req, res) => {
     category: req.params.category,
     status: req.params.status,
     warehouseName: req.params.warehouseName,
+    
+    res.status(200).send(`The item with the id ${id} was updated.`)
   };
 };
+
+const deleteOne = (req, res) => {
+  const inventoryData = inventoryListModel.getAll();
+  updatedInventoryData = inventoryData.filter((inventoryItem) => inventoryItem.id !== req.params.id);
+  inventoryListModel.writeInventories(updatedInventoryData);
+
+  res.status(200).send(`The item with the id ${req.params.id} was deleted.`)
+}
 
 module.exports = {
   getAll,
   getOne,
   editOne,
+  deleteOne,
 };
+

@@ -45,6 +45,8 @@ const editOne = (req, res) => {
     contact: req.params.contact.name,
     phone: req.params.contact.phone,
     email: req.params.contact.email,
+    
+    res.status(200).send(`The warehouse with the id ${id} was updated.`)
   };
 };
 
@@ -64,9 +66,23 @@ const postOne = (req, res) => {
   warehouseListModel.push(newWarehouse);
 };
 
+const deleteOne = (req, res) => {
+  const warehouseData = warehouseListModel.getAll();
+  updatedWarehouseData = warehouseData.filter((warehouse) => warehouse.id !== req.params.id);
+  warehouseListModel.writeWarehouses(updatedWarehouseData);
+  
+  const inventoryData = inventoryListModel.getAll();
+  updatedInventoryData = inventoryData.filter((inventoryList) => inventoryList.warehouseID !== req.params.id);
+  inventoryListModel.writeInventories(updatedInventoryData);
+
+  res.status(200).send(`The warehouse with the id ${req.params.id} was deleted.`)
+}
+
+
 module.exports = {
   getAll,
   getOne,
-  editOne,
+  editOne, 
   postOne,
+  deleteOne
 };
