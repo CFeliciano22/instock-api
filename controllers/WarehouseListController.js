@@ -1,5 +1,6 @@
 const warehouseListModel = require("../models/warehouseListModel.js");
 const inventoryListModel = require("../models/inventoryListModel.js");
+// const uuid = require('uuid');
 
 const getAll = (req, res) => {
   const warehouseData = warehouseListModel.getAll();
@@ -25,7 +26,7 @@ const getOne = (req, res) => {
   const foundWarehouse = warehouseListModel.getById(id);
   const warehouseInventoryList = inventoryListModel
     .getAll()
-    .filter((item) => item.warehouseID === foundWarehouse.id);
+    .filter((item) => item.warehouseID === foundWarehouse);
 
   res.send({
     warehouse: foundWarehouse,
@@ -35,5 +36,5 @@ const getOne = (req, res) => {
 
 module.exports = {
   getAll,
-  getOne,
+  getOne
 };

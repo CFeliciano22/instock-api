@@ -17,6 +17,7 @@ const getById = (id) => {
     id === inventory.id);
 };
 
+
 module.exports = 
 {
 getAll,

@@ -1,5 +1,7 @@
 const filePath = './data/warehouses.json';
-const fs = require ('fs')
+const req = require('express/lib/request');
+const res = require('express/lib/response');
+const fs = require ('fs');
 
 function readWarehouses() {
     const warehouseFile = fs.readFileSync(filePath);
@@ -20,5 +22,5 @@ const getById = (id) => {
 module.exports = 
 {
 getAll,
-getById
+getById,
 }
