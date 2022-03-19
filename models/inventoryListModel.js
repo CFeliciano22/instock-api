@@ -17,9 +17,13 @@ const getById = (id) => {
     id === inventory.id);
 };
 
+function writeInventories(data) {
+    fs.writeFileSync(filePath, JSON.stringify(data));
+};
 
 module.exports = 
 {
 getAll,
-getById
+getById,
+writeInventories
 }

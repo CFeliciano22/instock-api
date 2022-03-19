@@ -31,6 +31,7 @@ const getOne = (req, res) => {
   res.json(foundItem);
 };
 
+
 const postOne = (req, res) => {
   //InventoryItemID generator 
   let itemID = uuid.v4();
@@ -81,12 +82,40 @@ const postOne = (req, res) => {
     }
   );
 }
-}
+
 
 res.status(201).send(inventoryData); 
+}
+
+
+const editOne = (req, res) => {
+  const { id } = req.params;
+  const foundItem = inventoryListModel.getById(id);
+  foundItem = {
+    itemName: req.params.itemName,
+    description: req.params.description,
+    category: req.params.category,
+    status: req.params.status,
+    warehouseName: req.params.warehouseName,
+    
+    res.status(200).send(`The item with the id ${id} was updated.`)
+  };
+};
+
+const deleteOne = (req, res) => {
+  const inventoryData = inventoryListModel.getAll();
+  updatedInventoryData = inventoryData.filter((inventoryItem) => inventoryItem.id !== req.params.id);
+  inventoryListModel.writeInventories(updatedInventoryData);
+
+  res.status(200).send(`The item with the id ${req.params.id} was deleted.`)
+}
 
 module.exports = {
   getAll,
   getOne,
-  postOne
+  postOne,
+  editOne,
+  deleteOne,
 };
+
+
