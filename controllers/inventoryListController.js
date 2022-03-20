@@ -1,6 +1,6 @@
 const inventoryListModel = require("../models/inventoryListModel.js");
-const fs = require ('fs');
-const uuid = require('uuid');
+const fs = require("fs");
+const uuid = require("uuid");
 
 const getAll = (req, res) => {
   const inventoryData = inventoryListModel.getAll();
@@ -10,6 +10,7 @@ const getAll = (req, res) => {
       id: inventory.id,
       warehouseID: inventory.warehouseID,
       warehouseName: inventory.warehouseName,
+      description: inventory.description,
       itemName: inventory.itemName,
       category: inventory.category,
       status: inventory.status,
@@ -31,15 +32,14 @@ const getOne = (req, res) => {
   res.json(foundItem);
 };
 
-
 const postOne = (req, res) => {
-  //InventoryItemID generator 
+  //InventoryItemID generator
   let itemID = uuid.v4();
 
   //ListModel stuff
   const inventoryData = inventoryListModel.getAll();
 
-    //Validation 
+  //Validation
   let emptyCheck = 0;
 
   Object.values(req.body).forEach((item) => {
@@ -55,7 +55,7 @@ const postOne = (req, res) => {
   } else {
     let warehouseList = fs.readFileSync("./data/warehouses.json");
     let warehouseObj = JSON.parse(warehouseList);
-        
+
     let whID = warehouseObj.filter(
       (warehouse) => warehouse.name === req.body.warehouseName
     )[0].id;
@@ -63,30 +63,30 @@ const postOne = (req, res) => {
     let newItem = {
       id: itemID,
       warehouseID: whID,
-      warehouseName: req.body.warehouseName, 
+      warehouseName: req.body.warehouseName,
       itemName: req.body.itemName,
       description: req.body.description,
       category: req.body.category,
       status: req.body.status,
-      quantity: req.body.quantity
+      quantity: req.body.quantity,
     };
 
     //Push new InventoryItem to inventoryData
     inventoryData.push(newItem);
 
-    fs.writeFile("./data/inventories.json",JSON.stringify(inventoryData),(err) => {
+    fs.writeFile(
+      "./data/inventories.json",
+      JSON.stringify(inventoryData),
+      (err) => {
         if (err) {
           console.log(err);
         }
         console.log("new item added");
-    }
-  );
-}
-
-
-res.status(201).send(inventoryData); 
-}
-
+      }
+    );
+    res.status(201).send(inventoryData);
+  }
+};
 
 const editOne = (req, res) => {
   const { id } = req.params;
@@ -97,18 +97,19 @@ const editOne = (req, res) => {
     category: req.params.category,
     status: req.params.status,
     warehouseName: req.params.warehouseName,
-    
-    res.status(200).send(`The item with the id ${id} was updated.`)
   };
+  res.status(201).send(`The item with the id ${id} was updated.`);
 };
 
 const deleteOne = (req, res) => {
   const inventoryData = inventoryListModel.getAll();
-  updatedInventoryData = inventoryData.filter((inventoryItem) => inventoryItem.id !== req.params.id);
+  updatedInventoryData = inventoryData.filter(
+    (inventoryItem) => inventoryItem.id !== req.params.id
+  );
   inventoryListModel.writeInventories(updatedInventoryData);
 
-  res.status(200).send(`The item with the id ${req.params.id} was deleted.`)
-}
+  res.status(200).send(`The item with the id ${req.params.id} was deleted.`);
+};
 
 module.exports = {
   getAll,
@@ -117,5 +118,3 @@ module.exports = {
   editOne,
   deleteOne,
 };
-
-

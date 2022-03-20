@@ -1,8 +1,7 @@
 const warehouseListModel = require("../models/warehouseListModel.js");
 const inventoryListModel = require("../models/inventoryListModel.js");
-const uuid = require('uuid');
-const fs = require ('fs');
-
+const uuid = require("uuid");
+const fs = require("fs");
 
 const getAll = (req, res) => {
   const warehouseData = warehouseListModel.getAll();
@@ -28,7 +27,7 @@ const getOne = (req, res) => {
   const foundWarehouse = warehouseListModel.getById(id);
   const warehouseInventoryList = inventoryListModel
     .getAll()
-    .filter((item) => item.warehouseID === foundWarehouse);
+    .filter((item) => item.warehouseID === foundWarehouse.id);
 
   res.send({
     warehouse: foundWarehouse,
@@ -36,59 +35,61 @@ const getOne = (req, res) => {
   });
 };
 
-
 const postOne = (req, res) => {
   let warehouseData = warehouseListModel.getAll();
 
   //warehouseID generator
   let whID = uuid.v4();
 
-  // Validation 
+  // Validation
   let emptyCheck = 0;
-  const emailRegEx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  const phoneRegEx = /^\(?([0-9]{3})\)?[- ]?([0-9]{3})[- ]?([0-9]{4})$/
-  
-  Object.values(req.body).forEach(item => {
-      if (item === "") {
-          return emptyCheck += 1
-      }
+  const emailRegEx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const phoneRegEx = /^\(?([0-9]{3})\)?[- ]?([0-9]{3})[- ]?([0-9]{4})$/;
+
+  Object.values(req.body).forEach((item) => {
+    if (item === "") {
+      return (emptyCheck += 1);
+    }
   });
-  
+
   if (emptyCheck >= 1) {
-      res.status(403).send("Empty values found");
+    res.status(403).send("Empty values found");
   } else if (!emailRegEx.test(req.body.email)) {
-      res.status(403).send("Incorrect email");
+    res.status(403).send("Incorrect email");
   } else if (!phoneRegEx.test(req.body.phone)) {
-      res.status(403).send("Incorrect phone number")
+    res.status(403).send("Incorrect phone number");
   } else {
-      
-      let newWarehouse = {
-          id: whID,
-          name: req.body.name,
-          address: req.body.address,
-          city: req.body.city,
-          country: req.body.country,
-          contact: {
-              name: req.body.contact.name,
-              position: req.body.contact.position,
-              phone: req.body.contact.phone,
-              email: req.body.contact.email
-          }
-      }
+    let newWarehouse = {
+      id: whID,
+      name: req.body.name,
+      address: req.body.address,
+      city: req.body.city,
+      country: req.body.country,
+      contact: {
+        name: req.body.contact.name,
+        position: req.body.contact.position,
+        phone: req.body.contact.phone,
+        email: req.body.contact.email,
+      },
+    };
 
-      //Push newWarehouse to warehouseData
-      warehouseData.push(newWarehouse)
+    //Push newWarehouse to warehouseData
+    warehouseData.push(newWarehouse);
 
-      fs.writeFile("./data/warehouses.json",JSON.stringify(warehouseData), (err) => {
-          if (err) {
-              console.log(err.data);
-          }
-          console.log('New warehouse added successfully')
-      });
-  
-      res.status(201).json(warehouseData); 
+    fs.writeFile(
+      "./data/warehouses.json",
+      JSON.stringify(warehouseData),
+      (err) => {
+        if (err) {
+          console.log(err.data);
+        }
+        console.log("New warehouse added successfully");
       }
-}
+    );
+
+    res.status(201).json(warehouseData);
+  }
+};
 
 const editOne = (req, res) => {
   const { id } = req.params;
@@ -101,29 +102,32 @@ const editOne = (req, res) => {
     contact: req.params.contact.name,
     phone: req.params.contact.phone,
     email: req.params.contact.email,
-    
-    res.status(200).send(`The warehouse with the id ${id} was updated.`)
   };
+  res.status(200).send(`The warehouse with the id ${id} was updated.`);
 };
 
 const deleteOne = (req, res) => {
   const warehouseData = warehouseListModel.getAll();
-  updatedWarehouseData = warehouseData.filter((warehouse) => warehouse.id !== req.params.id);
+  updatedWarehouseData = warehouseData.filter(
+    (warehouse) => warehouse.id !== req.params.id
+  );
   warehouseListModel.writeWarehouses(updatedWarehouseData);
-  
+
   const inventoryData = inventoryListModel.getAll();
-  updatedInventoryData = inventoryData.filter((inventoryList) => inventoryList.warehouseID !== req.params.id);
+  updatedInventoryData = inventoryData.filter(
+    (inventoryList) => inventoryList.warehouseID !== req.params.id
+  );
   inventoryListModel.writeInventories(updatedInventoryData);
 
-  res.status(200).send(`The warehouse with the id ${req.params.id} was deleted.`)
-}
-
+  res
+    .status(200)
+    .send(`The warehouse with the id ${req.params.id} was deleted.`);
+};
 
 module.exports = {
   getAll,
   getOne,
-  editOne, 
+  editOne,
   postOne,
-  deleteOne
+  deleteOne,
 };
-
